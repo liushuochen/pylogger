@@ -11,4 +11,4 @@ __all__ = [
     "style"
 ]
 
-__version__ = "pylogger-0.1.0"
+__version__ = "1.0.B001"

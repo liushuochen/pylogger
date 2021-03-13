@@ -1,5 +1,5 @@
 import datetime
-from style import style
+from .style import style
 
 
 class Logger(object):
@@ -33,6 +33,22 @@ class Logger(object):
         else:
             return "\033[%s;%s;%sm%s\033[0m" % (print_type, font, background, log)
 
+    def debug(self, message, print_type=None, font=None, background=None):
+        if ((font is not None) or (background is not None)) and \
+                print_type is None:
+            print_type = style.type.default
+        color_message = self.combine(message, print_type, font, background)
+
+        title = "[%s] [DEBUG]" % str(datetime.datetime.now())
+        color_log = title + " " + color_message
+        log = title + " " + message
+        if self.output:
+            print(color_log)
+
+        if self.path is not None:
+            with open(self.path, "a") as file:
+                file.write(log)
+
     def info(self, message, print_type=None, font=None, background=None):
         if ((font is not None) or (background is not None)) and \
                 print_type is None:
@@ -40,6 +56,22 @@ class Logger(object):
         color_message = self.combine(message, print_type, font, background)
 
         title = "[%s] [INFO]" % str(datetime.datetime.now())
+        color_log = title + " " + color_message
+        log = title + " " + message
+        if self.output:
+            print(color_log)
+
+        if self.path is not None:
+            with open(self.path, "a") as file:
+                file.write(log)
+
+    def warning(self, message, print_type=None, font=None, background=None):
+        if ((font is not None) or (background is not None)) and \
+                print_type is None:
+            print_type = style.type.default
+        color_message = self.combine(message, print_type, font, background)
+
+        title = "[%s] [WARNING]" % str(datetime.datetime.now())
         color_log = title + " " + color_message
         log = title + " " + message
         if self.output:
@@ -64,33 +96,16 @@ class Logger(object):
             with open(self.path, "a") as file:
                 file.write(log)
 
-    def warn(self, message, print_type=None, font=None, background=None):
+    def critical(self, message, print_type=None, font=None, background=None):
         if ((font is not None) or (background is not None)) and \
                 print_type is None:
             print_type = style.type.default
         color_message = self.combine(message, print_type, font, background)
 
-        title = "[%s] [WARNING]" % str(datetime.datetime.now())
+        title = "[%s] [CRITICAL]" % str(datetime.datetime.now())
         color_log = title + " " + color_message
         log = title + " " + message
-        if self.output:
-            print(color_log)
-
-        if self.path is not None:
-            with open(self.path, "a") as file:
-                file.write(log)
-
-    def debug(self, message, print_type=None, font=None, background=None):
-        if ((font is not None) or (background is not None)) and \
-                print_type is None:
-            print_type = style.type.default
-        color_message = self.combine(message, print_type, font, background)
-
-        title = "[%s] [DEBUG]" % str(datetime.datetime.now())
-        color_log = title + " " + color_message
-        log = title + " " + message
-        if self.output:
-            print(color_log)
+        print(color_log)
 
         if self.path is not None:
             with open(self.path, "a") as file:
